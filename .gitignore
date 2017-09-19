@@ -57,5 +57,3 @@ cifar-10-batches-py/
 preprocessed-cifar10-data/
 
 ## python notebook
-.ipynb_checkpoints/
-*.ipynb
