@@ -1,5 +1,6 @@
 import tensorflow as tf
 
+from data import TitanicPreprocessor
 
 FLAGS = tf.app.flags.FLAGS
 tf.app.flags.DEFINE_string('data_dir', 'data',
@@ -9,7 +10,9 @@ tf.app.flags.DEFINE_string('preprocess_dir', 'preprocess',
 
 
 def main(argv=None):
-    pass
+    titanic = TitanicPreprocessor()
+    titanic.preprocess_and_save()
+
 
 if __name__ == '__main__':
     tf.app.run()

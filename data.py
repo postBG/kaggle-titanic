@@ -46,7 +46,7 @@ class TitanicPreprocessor:
 
     @staticmethod
     def _remove_fields(frame):
-        remove_fields = ['Name', 'Sex', 'Ticket', 'Cabin', 'Embarked']
+        remove_fields = ['Pclass', 'Name', 'Sex', 'Ticket', 'Cabin', 'Embarked']
         for field in remove_fields:
             frame = frame.drop(field, axis=1)
 
