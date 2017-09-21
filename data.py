@@ -18,8 +18,8 @@ class TitanicPreprocessor:
         if not os.path.exists(self.preprocess_dir):
             os.makedirs(self.preprocess_dir)
 
-        self.processed_train.to_csv(os.path.join(self.preprocess_dir, 'train.csv'))
-        self.processed_test.to_csv(os.path.join(self.preprocess_dir, 'test.csv'))
+        self.processed_train.to_csv(os.path.join(self.preprocess_dir, 'train.csv'), index=False)
+        self.processed_test.to_csv(os.path.join(self.preprocess_dir, 'test.csv'), index=False)
 
     @staticmethod
     def _preprocess(frame):
