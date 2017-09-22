@@ -2,7 +2,7 @@ import tensorflow as tf
 import pandas as pd
 
 from data import TitanicData
-from models import SimpleGenderModel, MyDecisionTreeClassifier
+import models
 from printer import DataFramePrinter
 
 FLAGS = tf.app.flags.FLAGS
@@ -17,9 +17,9 @@ def main(argv=None):
     titanic.preprocess_and_save()
     printer = DataFramePrinter()
 
-    model = MyDecisionTreeClassifier(max_depth=9)
+    model = models.MySVC()
     model.fit(pd.concat([titanic.processed_validation, titanic.processed_train]))
-    printer.to_csv(model.predict(titanic.processed_test), 'output_logistic.csv')
+    printer.to_csv(model.predict(titanic.processed_test), 'output_svc.csv')
 
 
 if __name__ == '__main__':

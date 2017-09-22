@@ -1,9 +1,16 @@
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
+from sklearn.svm import SVC
 
 
 class Model:
+    def _seperate_features_and_labels(self, train_data):
+        train_labels = train_data['Survived']
+        train_features = train_data.drop('Survived', axis=1)
+
+        return train_features, train_labels
+
     def predict(self, data):
         raise NotImplementedError
 
@@ -25,12 +32,6 @@ class SklearnMixin(Model):
         return pd.DataFrame(data=[(passenger_id, survive,) for passenger_id, survive in zip(ids, labels)],
                             columns=['PassengerId', 'Survived'])
 
-    def _seperate_features_and_labels(self, train_data):
-        train_labels = train_data['Survived']
-        train_features = train_data.drop('Survived', axis=1)
-
-        return train_features, train_labels
-
 
 class SimpleGenderModel(Model):
     def predict(self, data):
@@ -49,3 +50,8 @@ class MyDecisionTreeClassifier(SklearnMixin):
 class MyLogisticRegression(SklearnMixin):
     def __init__(self, *args, **kwargs):
         self.model = LogisticRegression(*args, **kwargs)
+
+
+class MySVC(SklearnMixin):
+    def __init__(self):
+        self.model = SVC(kernel='linear', C=0.025)
