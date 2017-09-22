@@ -17,9 +17,9 @@ def main(argv=None):
     titanic.preprocess_and_save()
     printer = DataFramePrinter()
 
-    model = models.MySVC()
+    model = models.MyRandomForestClassifier()
     model.fit(pd.concat([titanic.processed_validation, titanic.processed_train]))
-    printer.to_csv(model.predict(titanic.processed_test), 'output_svc.csv')
+    printer.to_csv(model.predict(titanic.processed_test), 'output_random_forest.csv')
 
 
 if __name__ == '__main__':

@@ -1,4 +1,5 @@
 import pandas as pd
+from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
@@ -44,7 +45,7 @@ class SimpleGenderModel(Model):
 
 class MyDecisionTreeClassifier(SklearnMixin):
     def __init__(self, *args, **kwargs):
-        self.model = DecisionTreeClassifier(*args, **kwargs)
+        self.model = DecisionTreeClassifier(max_depth=9)
 
 
 class MyLogisticRegression(SklearnMixin):
@@ -55,3 +56,17 @@ class MyLogisticRegression(SklearnMixin):
 class MySVC(SklearnMixin):
     def __init__(self):
         self.model = SVC(kernel='linear', C=0.025)
+
+
+class MyRandomForestClassifier(SklearnMixin):
+    def __init__(self):
+        rf_params = {
+            'n_jobs': -1,
+            'n_estimators': 500,
+            'warm_start': True,
+            'max_depth': 6,
+            'min_samples_leaf': 2,
+            'max_features': 'sqrt',
+            'verbose': 0
+        }
+        self.model = RandomForestClassifier(**rf_params)
