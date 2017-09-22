@@ -2,30 +2,42 @@ import os
 import pandas as pd
 
 
-class TitanicPreprocessor:
-    def __init__(self, data_dir='data'):
+def file_exists(directory, filename):
+    return os.path.exists(os.path.join(directory, filename))
+
+
+class TitanicData:
+    def __init__(self, data_dir='data', preprocess_dir='preprocess'):
         self.data_dir = data_dir
+        self.preprocess_dir = preprocess_dir
 
         self.train = pd.read_csv(os.path.join(self.data_dir, 'train.csv'))
         self.test = pd.read_csv(os.path.join(self.data_dir, 'test.csv'))
 
-    def preprocess_and_save(self, preprocess_dir='preprocess'):
-        self.processed_train = TitanicPreprocessor._preprocess(self.train)
-        self.processed_test = TitanicPreprocessor._preprocess(self.test)
+    def load_preprocess_when_exists(self):
+        if not os.path.exists(self.preprocess_dir):
+            raise FileNotFoundError(self.preprocess_dir)
 
-        self.preprocess_dir = preprocess_dir
+        self.processed_train = pd.read_csv(os.path.join(self.preprocess_dir, 'train.csv'))
+        self.processed_test = pd.read_csv(os.path.join(self.preprocess_dir, 'test.csv'))
+
+    def preprocess_and_save(self):
+        if file_exists(self.preprocess_dir, 'train.csv') and file_exists(self.preprocess_dir, 'test.csv'):
+            self.load_preprocess_when_exists()
+            return
 
         if not os.path.exists(self.preprocess_dir):
             os.makedirs(self.preprocess_dir)
 
         self.processed_train.to_csv(os.path.join(self.preprocess_dir, 'train.csv'), index=False)
         self.processed_test.to_csv(os.path.join(self.preprocess_dir, 'test.csv'), index=False)
+        self.load_preprocess_when_exists()
 
     @staticmethod
     def _preprocess(frame):
         """Preprocess using side effect."""
-        frame = TitanicPreprocessor._add_or_modifiy_fields(frame)
-        frame = TitanicPreprocessor._remove_fields(frame)
+        frame = TitanicData._add_or_modifiy_fields(frame)
+        frame = TitanicData._remove_fields(frame)
 
         return frame
 
