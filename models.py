@@ -7,7 +7,7 @@ class Model:
         raise NotImplementedError
 
 
-def _print_stats(predicted, labels):
+def print_stats(predicted, labels):
     correct = sum([p == l for p, l in zip(predicted, labels)])
     print('model accuracy: {:2}'.format(correct / len(labels)))
 
@@ -16,9 +16,6 @@ class SklearnModel(Model):
     def fit(self, train_data):
         features, labels = self._seperate_features_and_labels(train_data)
         self.model.fit(features, labels)
-
-        # not a validation. it is just information.
-        _print_stats(self.model.predict(features), labels)
 
     def predict(self, data):
         ids = data['PassengerId']

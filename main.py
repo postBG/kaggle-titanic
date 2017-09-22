@@ -1,4 +1,5 @@
 import tensorflow as tf
+import pandas as pd
 
 from data import TitanicData
 from models import SimpleGenderModel, MyDecisionTreeClassifier
@@ -20,8 +21,8 @@ def main(argv=None):
     titanic.preprocess_and_save()
     printer = DataFramePrinter()
 
-    model = MyDecisionTreeClassifier(max_depth=10)
-    model.fit(titanic.processed_train)
+    model = MyDecisionTreeClassifier(max_depth=9)
+    model.fit(pd.concat([titanic.processed_validation, titanic.processed_train]))
     printer.to_csv(model.predict(titanic.processed_test), FLAGS.decision_output)
 
 

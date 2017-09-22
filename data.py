@@ -19,18 +19,28 @@ class TitanicData:
             raise FileNotFoundError(self.preprocess_dir)
 
         self.processed_train = pd.read_csv(os.path.join(self.preprocess_dir, 'train.csv'))
+        self.processed_validation = pd.read_csv(os.path.join(self.preprocess_dir, 'validation.csv'))
         self.processed_test = pd.read_csv(os.path.join(self.preprocess_dir, 'test.csv'))
 
-    def preprocess_and_save(self):
-        if file_exists(self.preprocess_dir, 'train.csv') and file_exists(self.preprocess_dir, 'test.csv'):
+    def preprocess_and_save(self, validation_rate=0.1):
+        if file_exists(self.preprocess_dir, 'train.csv') \
+                and file_exists(self.preprocess_dir, 'test.csv') \
+                and file_exists(self.preprocess_dir, 'validation.csv'):
             self.load_preprocess_when_exists()
             return
 
         if not os.path.exists(self.preprocess_dir):
             os.makedirs(self.preprocess_dir)
 
-        self.processed_train.to_csv(os.path.join(self.preprocess_dir, 'train.csv'), index=False)
-        self.processed_test.to_csv(os.path.join(self.preprocess_dir, 'test.csv'), index=False)
+        validation_number = int(len(self.train) * validation_rate)
+
+        processed_train = TitanicData._preprocess(self.train)
+        processed_train.iloc[:validation_number].to_csv(os.path.join(self.preprocess_dir, 'validation.csv'), index=False)
+        processed_train.iloc[validation_number:].to_csv(os.path.join(self.preprocess_dir, 'train.csv'), index=False)
+
+        processed_test = TitanicData._preprocess(self.test)
+        processed_test.to_csv(os.path.join(self.preprocess_dir, 'test.csv'), index=False)
+
         self.load_preprocess_when_exists()
 
     @staticmethod
