@@ -1,5 +1,6 @@
 import pandas as pd
 from sklearn.tree import DecisionTreeClassifier
+from sklearn.linear_model import LogisticRegression
 
 
 class Model:
@@ -12,7 +13,7 @@ def print_stats(predicted, labels):
     print('model accuracy: {:2}'.format(correct / len(labels)))
 
 
-class SklearnModel(Model):
+class SklearnMixin(Model):
     def fit(self, train_data):
         features, labels = self._seperate_features_and_labels(train_data)
         self.model.fit(features, labels)
@@ -40,6 +41,11 @@ class SimpleGenderModel(Model):
         return answer
 
 
-class MyDecisionTreeClassifier(SklearnModel):
+class MyDecisionTreeClassifier(SklearnMixin):
     def __init__(self, *args, **kwargs):
         self.model = DecisionTreeClassifier(*args, **kwargs)
+
+
+class MyLogisticRegression(SklearnMixin):
+    def __init__(self, *args, **kwargs):
+        self.model = LogisticRegression(*args, **kwargs)

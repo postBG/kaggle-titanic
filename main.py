@@ -10,10 +10,6 @@ tf.app.flags.DEFINE_string('data_dir', 'data',
                            """Directory path that contains titanic data as train.csv and test.csv""")
 tf.app.flags.DEFINE_string('preprocess_dir', 'preprocess',
                            """Directory path that saves preprocessed data as csv""")
-tf.app.flags.DEFINE_string('simple_output', 'output_simple.csv',
-                           """Directory path that saves simple gender model output as csv""")
-tf.app.flags.DEFINE_string('decision_output', 'output_decision.csv',
-                           """Directory path that saves simple gender model output as csv""")
 
 
 def main(argv=None):
@@ -23,7 +19,7 @@ def main(argv=None):
 
     model = MyDecisionTreeClassifier(max_depth=9)
     model.fit(pd.concat([titanic.processed_validation, titanic.processed_train]))
-    printer.to_csv(model.predict(titanic.processed_test), FLAGS.decision_output)
+    printer.to_csv(model.predict(titanic.processed_test), 'output_logistic.csv')
 
 
 if __name__ == '__main__':
