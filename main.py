@@ -20,7 +20,7 @@ def main(argv=None):
     titanic.preprocess_and_save()
     printer = DataFramePrinter()
 
-    model = MyDecisionTreeClassifier(max_depth=5)
+    model = MyDecisionTreeClassifier(max_depth=10)
     model.fit(titanic.processed_train)
     printer.to_csv(model.predict(titanic.processed_test), FLAGS.decision_output)
 
