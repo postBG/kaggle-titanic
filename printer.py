@@ -1,6 +1,11 @@
 import os
 
 
+def print_stats(predicted, labels):
+    correct = sum([p == l for p, l in zip(predicted, labels)])
+    print('model accuracy: {:2}'.format(correct / len(labels)))
+
+
 class Printer:
     answer_dir = 'answer'
 

@@ -16,11 +16,6 @@ class Model:
         raise NotImplementedError
 
 
-def print_stats(predicted, labels):
-    correct = sum([p == l for p, l in zip(predicted, labels)])
-    print('model accuracy: {:2}'.format(correct / len(labels)))
-
-
 class SklearnMixin(Model):
     def fit(self, train_data):
         features, labels = self._seperate_features_and_labels(train_data)

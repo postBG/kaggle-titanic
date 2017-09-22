@@ -35,7 +35,8 @@ class TitanicData:
         validation_number = int(len(self.train) * validation_rate)
 
         processed_train = TitanicData._preprocess(self.train)
-        processed_train.iloc[:validation_number].to_csv(os.path.join(self.preprocess_dir, 'validation.csv'), index=False)
+        processed_train.iloc[:validation_number].to_csv(os.path.join(self.preprocess_dir, 'validation.csv'),
+                                                        index=False)
         processed_train.iloc[validation_number:].to_csv(os.path.join(self.preprocess_dir, 'train.csv'), index=False)
 
         processed_test = TitanicData._preprocess(self.test)
