@@ -14,6 +14,9 @@ class Model:
 
         return train_features, train_labels
 
+    def fit(self, train_data):
+        raise NotImplementedError
+
     def predict(self, data):
         raise NotImplementedError
 
@@ -34,6 +37,9 @@ class SklearnMixin(Model):
 
 
 class SimpleGenderModel(Model):
+    def fit(self, train_data):
+        pass
+
     def predict(self, data):
         answer = data[['PassengerId', 'Sex_female']].rename(columns={
             'Sex_female': 'Survived'
@@ -71,7 +77,7 @@ class MyRandomForestClassifier(SklearnMixin):
         self.model = RandomForestClassifier(**rf_params)
 
 
-class ApesTogetherStrongModel(Model):
+class EnsembleWeakModel(Model):
     def __init__(self):
         self.simple_gender_model = SimpleGenderModel()
         self.decision_tree_model = MyDecisionTreeClassifier()
@@ -90,4 +96,18 @@ class ApesTogetherStrongModel(Model):
             model.fit(train_data)
 
     def predict(self, data):
-        voting_board = pd.DataFrame()
+        voting_board = self._create_voting_board(data)
+        for model in self.models:
+            voting_board['voting'] = voting_board['voting'] + model.predict(data)['Survived']
+
+        majority_threshold = len(self.models) / 2
+        voting_board['Survived'] = voting_board['voting'].apply(lambda vote: 1 if vote > majority_threshold else 0)
+
+        return voting_board.filter(['PassengerId', 'Survived'], axis=1)
+
+    def _create_voting_board(self, data):
+        voting_board = pd.DataFrame(index=range(len(data.index)))
+        voting_board['PassengerId'] = data['PassengerId'].copy()
+        voting_board['voting'] = pd.Series([0 for _ in range(len(voting_board.index))])
+
+        return voting_board

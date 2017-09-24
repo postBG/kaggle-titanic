@@ -69,8 +69,5 @@ class TitanicData:
 
     @staticmethod
     def _remove_fields(frame):
-        remove_fields = ['Pclass', 'Name', 'Sex', 'Ticket', 'Cabin', 'Embarked']
-        for field in remove_fields:
-            frame = frame.drop(field, axis=1)
-
+        frame = frame.drop(['Pclass', 'Name', 'Sex', 'Ticket', 'Cabin', 'Embarked'], axis=1)
         return frame
