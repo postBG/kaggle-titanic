@@ -26,9 +26,12 @@ class Trainer:
         self.correct_pred = _correct_pred(self.model)
         self.accuracy = _accuracy(model)
 
+        self.saver = tf.train.Saver()
+
     def run(self, session):
         for epoch in range(self.epochs):
             self.train_one_epoch(session, epoch)
+        self.saver.save(session, '../saved_model/model')
 
     def train_one_epoch(self, session, epoch):
         for features, labels in self.batch_manager.batch_data():
