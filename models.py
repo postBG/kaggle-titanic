@@ -1,19 +1,14 @@
 import pandas as pd
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.tree import DecisionTreeClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import SVC
+from sklearn.tree import DecisionTreeClassifier
 
+from data import separate_features_and_labels
 from printer import print_stats
 
 
 class Model:
-    def _seperate_features_and_labels(self, train_data):
-        train_labels = train_data['Survived']
-        train_features = train_data.drop('Survived', axis=1)
-
-        return train_features, train_labels
-
     def fit(self, train_data):
         raise NotImplementedError
 
@@ -23,7 +18,7 @@ class Model:
 
 class SklearnMixin(Model):
     def fit(self, train_data):
-        features, labels = self._seperate_features_and_labels(train_data)
+        features, labels = separate_features_and_labels(train_data)
         self.model.fit(features, labels)
 
         print_stats(self.model.predict(features), labels)

@@ -71,3 +71,10 @@ class TitanicData:
     def _remove_fields(frame):
         frame = frame.drop(['Pclass', 'Name', 'Sex', 'Ticket', 'Cabin', 'Embarked'], axis=1)
         return frame
+
+
+def separate_features_and_labels(train_data):
+    train_labels = train_data['Survived']
+    train_features = train_data.drop('Survived', axis=1)
+
+    return train_features, train_labels
