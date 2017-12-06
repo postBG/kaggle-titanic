@@ -14,7 +14,7 @@ Compared many different model using same features and data.
 
 
 
-In traditional models, I think there should be feature engineering. 
+In traditional models, I think there should be feature engineering. And Normalization will definitely helpful. 
 
 And almost every models are very easily overfitted which means training accuracy was much more higher than validation accuracy.
 
